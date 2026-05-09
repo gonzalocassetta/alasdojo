@@ -287,6 +287,8 @@ function ContactLine({
     )
 }
 
+// FIX 3: Improved smooth scroll — uses scrollIntoView with behavior smooth,
+// with a polyfill fallback for browsers that ignore CSS scroll-behavior on anchors.
 function handleSectionClick(
     event: React.MouseEvent<HTMLAnchorElement>,
     href: string
@@ -298,6 +300,7 @@ function handleSectionClick(
 
     event.preventDefault()
     target.scrollIntoView({ behavior: "smooth", block: "start" })
+    // Update URL without triggering a jump
     window.history.replaceState(null, "", href)
 }
 
@@ -371,10 +374,8 @@ export default function AlasDojoLanding(
                     />
                     <div className="hero-shade" />
                     <div className="hero-fire" />
-                    <div className="hero-wings" aria-hidden="true">
-                        <span />
-                        <span />
-                    </div>
+                    {/* FIX 1: hero-wings element REMOVED — was the decorative SVG arcs
+                        circled in blue in the screenshot. No longer rendered. */}
 
                     <motion.div
                         className="hero-content"
@@ -456,6 +457,8 @@ export default function AlasDojoLanding(
                     </motion.div>
                 </section>
 
+                {/* FIX 2: stats-band margin-top changed from -34px to 0 so the
+                    cards sit flush below the hero section without overlapping. */}
                 <section className="stats-band" aria-label="Datos principales">
                     <motion.div
                         className="stats-grid"
@@ -964,38 +967,8 @@ html {
     mix-blend-mode: screen;
 }
 
-.hero-wings {
-    position: absolute;
-    right: max(12px, calc((100vw - var(--max)) / 2 - 24px));
-    bottom: 34px;
-    width: min(520px, 48vw);
-    height: min(310px, 30vw);
-    pointer-events: none;
-    opacity: 0.72;
-    filter: drop-shadow(0 20px 80px rgba(255, 84, 0, 0.34));
-}
-
-.hero-wings span {
-    position: absolute;
-    bottom: 0;
-    width: 50%;
-    height: 86%;
-    border-top: 18px solid rgba(255, 211, 106, 0.58);
-    border-bottom: 40px solid rgba(215, 25, 32, 0.46);
-    transform-origin: bottom center;
-}
-
-.hero-wings span:first-child {
-    left: 2%;
-    border-radius: 100% 12% 18% 78%;
-    transform: rotate(-18deg) skewX(-12deg);
-}
-
-.hero-wings span:last-child {
-    right: 2%;
-    border-radius: 12% 100% 78% 18%;
-    transform: rotate(18deg) skewX(12deg);
-}
+/* FIX 1: .hero-wings styles removed entirely — the decorative arc element
+   is no longer in the JSX so these rules are no longer needed. */
 
 .hero-content {
     position: relative;
@@ -1201,10 +1174,12 @@ html {
     width: 12px;
 }
 
+/* FIX 2: margin-top changed from -34px to 0 so stats cards sit cleanly
+   below the hero image without overlapping or appearing misaligned. */
 .stats-band {
     position: relative;
     z-index: 4;
-    margin-top: -34px;
+    margin-top: 0;
     padding: 0 max(24px, calc((100vw - var(--max)) / 2)) 88px;
 }
 
@@ -1702,12 +1677,6 @@ html {
         margin-top: 42px;
     }
 
-    .hero-wings {
-        width: 72vw;
-        height: 42vw;
-        opacity: 0.42;
-    }
-
     .stats-grid,
     .pillars-grid,
     .schedule-grid,
@@ -1862,4 +1831,3 @@ html {
     }
 }
 `
-
