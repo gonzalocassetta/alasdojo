@@ -1,4 +1,3 @@
-@@ -1,1865 +1,1865 @@
 import * as React from "react"
 import { motion } from "framer-motion"
 
@@ -82,7 +81,6 @@ type AlasDojoProps = {
 const DEFAULTS: AlasDojoProps = {
     brand: "Alas Dojo",
     logoImage: "",
-    logoImage: "https://i.imgur.com/bLTKQrJ.png",
     subtitle: "Kyokushin Karate en Mercedes",
     discipline: "World Kyokushin Karate",
     instructor: "Shihan Freddy Mazzoni",
@@ -135,10 +133,8 @@ const DEFAULTS: AlasDojoProps = {
     fridayText: "Viernes - 19:00 hs",
     galleryLabel: "Galería",
     galleryTitle: "Imágenes de referencia para transmitir energía de dojo.",
-    galleryTitle: "",
     galleryText:
         "Estas fotografías son placeholders. Luego podés cambiarlas por fotos reales de Alas Dojo desde las propiedades del componente en Framer.",
-        "",
     galleryOneTitle: "Técnica",
     galleryOneTag: "Precisión",
     galleryTwoTitle: "Kumite",
@@ -1866,4 +1862,4 @@ html {
     }
 }
 `
-~
+
