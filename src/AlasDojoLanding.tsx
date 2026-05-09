@@ -1,5 +1,5 @@
+@@ -1,1865 +1,1865 @@
 import * as React from "react"
-import { addPropertyControls, ControlType } from "framer"
 import { motion } from "framer-motion"
 
 type AlasDojoProps = {
@@ -82,6 +82,7 @@ type AlasDojoProps = {
 const DEFAULTS: AlasDojoProps = {
     brand: "Alas Dojo",
     logoImage: "",
+    logoImage: "https://i.imgur.com/bLTKQrJ.png",
     subtitle: "Kyokushin Karate en Mercedes",
     discipline: "World Kyokushin Karate",
     instructor: "Shihan Freddy Mazzoni",
@@ -134,8 +135,10 @@ const DEFAULTS: AlasDojoProps = {
     fridayText: "Viernes - 19:00 hs",
     galleryLabel: "Galería",
     galleryTitle: "Imágenes de referencia para transmitir energía de dojo.",
+    galleryTitle: "",
     galleryText:
         "Estas fotografías son placeholders. Luego podés cambiarlas por fotos reales de Alas Dojo desde las propiedades del componente en Framer.",
+        "",
     galleryOneTitle: "Técnica",
     galleryOneTag: "Precisión",
     galleryTwoTitle: "Kumite",
@@ -149,22 +152,21 @@ const DEFAULTS: AlasDojoProps = {
     contactText:
         "Consultá por WhatsApp y sumate a una práctica que trabaja cuerpo, mente y actitud desde el primer día.",
     footerCredit: "Hecho por Gonzalo DevTeam",
-    mapUrl:
-        "https://www.google.com/maps/search/?api=1&query=Club%20Ascencio%20Mercedes%20Uruguay",
+    mapUrl: "https://www.google.com/maps/search/?api=1&query=Club%20Ascencio%20Mercedes%20Uruguay",
     heroImage:
-        "https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&q=82&w=2200",
+        "https://images.unsplash.com/photo-1688632106590-39547edc1112?auto=format&fit=crop&q=80&w=2200",
     instructorImage:
-        "https://i.imgur.com/SNBCORy.png",
+        "https://i.imgur.com/SNBCORy.png?auto=compress&cs=tinysrgb&w=1200",
     dojoImage:
-        "https://i.imgur.com/wyj3QBl.png",
+        "https://i.imgur.com/wyj3QBl.png?auto=compress&cs=tinysrgb&w=1400",
     galleryOneImage:
-        "https://i.imgur.com/hj6XxVx.png",
+        "https://i.imgur.com/hj6XxVx.png?auto=compress&cs=tinysrgb&w=1200",
     galleryTwoImage:
-        "https://i.imgur.com/V8vvE28.png",
+        "https://i.imgur.com/V8vvE28.png?auto=compress&cs=tinysrgb&w=1200",
     galleryThreeImage:
-        "https://i.imgur.com/T5jHgbw.png",
+        "https://i.imgur.com/T5jHgbw.png?auto=compress&cs=tinysrgb&w=1200",
     galleryFourImage:
-        "https://i.imgur.com/3mJiG5K.png",
+        "https://i.imgur.com/3mJiG5K.png?auto=compress&cs=tinysrgb&w=1200",
     backgroundColor: "#120706",
     inkColor: "#fff7df",
     mutedColor: "#f5c99b",
@@ -249,7 +251,7 @@ function WingMark({ brand, src }: { brand: string; src?: string }) {
                         <span />
                         <span />
                     </span>
-                    <strong>AD</strong>
+                    <strong>火</strong>
                     <span className="alas-logo__wing alas-logo__wing--right">
                         <span />
                         <span />
@@ -299,18 +301,8 @@ function handleSectionClick(
     if (!target) return
 
     event.preventDefault()
-
-    const navOffset = 96
-    const top =
-        target.getBoundingClientRect().top + window.scrollY - navOffset
-
-    window.requestAnimationFrame(() => {
-        window.scrollTo({
-            top: Math.max(top, 0),
-            behavior: "smooth",
-        })
-        window.history.replaceState(null, "", href)
-    })
+    target.scrollIntoView({ behavior: "smooth", block: "start" })
+    window.history.replaceState(null, "", href)
 }
 
 export default function AlasDojoLanding(
@@ -383,6 +375,11 @@ export default function AlasDojoLanding(
                     />
                     <div className="hero-shade" />
                     <div className="hero-fire" />
+                    <div className="hero-wings" aria-hidden="true">
+                        <span />
+                        <span />
+                    </div>
+
                     <motion.div
                         className="hero-content"
                         initial="hidden"
@@ -634,17 +631,22 @@ export default function AlasDojoLanding(
                         viewport={{ once: true, amount: 0.25 }}
                         variants={staggerGroup}
                     >
-                        {[data.mondayText, data.wednesdayText, data.fridayText].map(
-                            (item) => {
-                                const [day, time] = item.split(" - ")
-                                return (
-                                    <motion.article key={item} variants={cardReveal}>
-                                        <span>{day}</span>
-                                        <strong>{time || "19:00 hs"}</strong>
-                                    </motion.article>
-                                )
-                            }
-                        )}
+                        {[
+                            data.mondayText,
+                            data.wednesdayText,
+                            data.fridayText,
+                        ].map((item) => {
+                            const [day, time] = item.split(" - ")
+                            return (
+                                <motion.article
+                                    key={item}
+                                    variants={cardReveal}
+                                >
+                                    <span>{day}</span>
+                                    <strong>{time || "19:00 hs"}</strong>
+                                </motion.article>
+                            )
+                        })}
                     </motion.div>
                 </section>
 
@@ -742,10 +744,19 @@ export default function AlasDojoLanding(
                     >
                         <WingMark brand={data.brand} src={data.logoImage} />
                         <ContactLine label="Dojo" value={data.brand} />
-                        <ContactLine label="Disciplina" value={data.discipline} />
-                        <ContactLine label="Instructor" value={data.instructor} />
+                        <ContactLine
+                            label="Disciplina"
+                            value={data.discipline}
+                        />
+                        <ContactLine
+                            label="Instructor"
+                            value={data.instructor}
+                        />
                         <ContactLine label="Lugar" value={data.address} />
-                        <ContactLine label="Horario" value="Lun, mié y vie - 19:00 hs" />
+                        <ContactLine
+                            label="Horario"
+                            value="Lun, mié y vie - 19:00 hs"
+                        />
                         <ContactLine
                             label="WhatsApp"
                             value={
@@ -921,10 +932,10 @@ html {
 
 .hero-section {
     position: relative;
-    min-height: 86vh;
+    min-height: 92vh;
     display: grid;
     align-items: center;
-    padding: 126px max(24px, calc((100vw - var(--max)) / 2)) 96px;
+    padding: 126px max(24px, calc((100vw - var(--max)) / 2)) 72px;
     overflow: hidden;
 }
 
@@ -955,6 +966,39 @@ html {
         radial-gradient(ellipse at 12% 72%, rgba(215, 25, 32, 0.42), transparent 24rem),
         radial-gradient(ellipse at 82% 88%, rgba(255, 211, 106, 0.2), transparent 20rem);
     mix-blend-mode: screen;
+}
+
+.hero-wings {
+    position: absolute;
+    right: max(12px, calc((100vw - var(--max)) / 2 - 24px));
+    bottom: 34px;
+    width: min(520px, 48vw);
+    height: min(310px, 30vw);
+    pointer-events: none;
+    opacity: 0.72;
+    filter: drop-shadow(0 20px 80px rgba(255, 84, 0, 0.34));
+}
+
+.hero-wings span {
+    position: absolute;
+    bottom: 0;
+    width: 50%;
+    height: 86%;
+    border-top: 18px solid rgba(255, 211, 106, 0.58);
+    border-bottom: 40px solid rgba(215, 25, 32, 0.46);
+    transform-origin: bottom center;
+}
+
+.hero-wings span:first-child {
+    left: 2%;
+    border-radius: 100% 12% 18% 78%;
+    transform: rotate(-18deg) skewX(-12deg);
+}
+
+.hero-wings span:last-child {
+    right: 2%;
+    border-radius: 12% 100% 78% 18%;
+    transform: rotate(18deg) skewX(12deg);
 }
 
 .hero-content {
@@ -1019,22 +1063,17 @@ html {
 }
 
 .hero-panel {
-    position: relative;
+    position: absolute;
     z-index: 3;
-    right: auto;
-    bottom: auto;
-    width: min(520px, 100%);
-    margin-top: 28px;
-    padding: 18px 20px;
+    right: max(24px, calc((100vw - var(--max)) / 2));
+    bottom: 66px;
+    width: min(310px, calc(100% - 48px));
+    padding: 22px;
     border: 1px solid rgba(255, 211, 106, 0.3);
     border-radius: 8px;
-    background: linear-gradient(135deg, rgba(18, 7, 6, 0.82), rgba(60, 17, 10, 0.64));
+    background: rgba(18, 7, 6, 0.76);
     backdrop-filter: blur(14px);
     box-shadow: 0 26px 72px rgba(0, 0, 0, 0.46);
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: center;
-    gap: 14px 20px;
     transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
 }
 
@@ -1054,14 +1093,14 @@ html {
 
 .hero-panel strong {
     display: block;
-    margin-top: 6px;
+    margin-top: 8px;
     color: var(--cream);
-    font-size: 24px;
+    font-size: 26px;
     line-height: 1;
 }
 
 .hero-panel p {
-    margin: 7px 0 0;
+    margin: 8px 0 18px;
     color: var(--muted);
     font-size: 14px;
     font-weight: 700;
@@ -1069,19 +1108,10 @@ html {
 
 .hero-panel a {
     display: inline-flex;
-    grid-column: 2;
-    grid-row: 1 / span 2;
-    align-items: center;
-    justify-content: center;
-    min-height: 42px;
-    padding: 0 14px;
-    border: 1px solid rgba(255, 211, 106, 0.26);
-    border-radius: 6px;
     color: var(--gold);
     font-size: 12px;
     font-weight: 950;
     text-transform: uppercase;
-    white-space: nowrap;
 }
 
 .alas-logo {
@@ -1126,8 +1156,7 @@ html {
     border-radius: 50%;
     background: radial-gradient(circle at 50% 35%, var(--gold), var(--flame) 58%, #210603);
     color: #160403;
-    font-size: 11px;
-    font-weight: 950;
+    font-size: 15px;
     line-height: 1;
 }
 
@@ -1179,12 +1208,8 @@ html {
 .stats-band {
     position: relative;
     z-index: 4;
-    margin-top: 0;
-    padding: 44px max(24px, calc((100vw - var(--max)) / 2)) 92px;
-    background:
-        linear-gradient(180deg, rgba(255, 106, 0, 0.08), rgba(18, 7, 6, 0)),
-        #120706;
-    border-top: 1px solid rgba(255, 211, 106, 0.12);
+    margin-top: -34px;
+    padding: 0 max(24px, calc((100vw - var(--max)) / 2)) 88px;
 }
 
 .stats-grid,
@@ -1678,7 +1703,13 @@ html {
         left: auto;
         right: auto;
         bottom: auto;
-        margin-top: 30px;
+        margin-top: 42px;
+    }
+
+    .hero-wings {
+        width: 72vw;
+        height: 42vw;
+        opacity: 0.42;
     }
 
     .stats-grid,
@@ -1787,24 +1818,11 @@ html {
         align-items: stretch;
     }
 
-    .hero-panel {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-
-    .hero-panel a {
-        grid-column: auto;
-        grid-row: auto;
-        width: 100%;
-        margin-top: 6px;
-    }
-
     .btn {
         width: 100%;
     }
 
     .stats-band {
-        padding-top: 34px;
         padding-bottom: 54px;
     }
 
@@ -1848,393 +1866,4 @@ html {
     }
 }
 `
-
-addPropertyControls(AlasDojoLanding, {
-    brand: {
-        type: ControlType.String,
-        title: "Marca",
-        defaultValue: DEFAULTS.brand,
-    },
-    logoImage: {
-        type: ControlType.Image,
-        title: "Logo",
-        defaultValue: DEFAULTS.logoImage,
-    },
-    subtitle: {
-        type: ControlType.String,
-        title: "Subtítulo",
-        defaultValue: DEFAULTS.subtitle,
-    },
-    discipline: {
-        type: ControlType.String,
-        title: "Disciplina",
-        defaultValue: DEFAULTS.discipline,
-    },
-    instructor: {
-        type: ControlType.String,
-        title: "Instructor",
-        defaultValue: DEFAULTS.instructor,
-    },
-    rank: {
-        type: ControlType.String,
-        title: "Rango",
-        defaultValue: DEFAULTS.rank,
-    },
-    club: {
-        type: ControlType.String,
-        title: "Club",
-        defaultValue: DEFAULTS.club,
-    },
-    location: {
-        type: ControlType.String,
-        title: "Ciudad",
-        defaultValue: DEFAULTS.location,
-    },
-    address: {
-        type: ControlType.String,
-        title: "Dirección",
-        defaultValue: DEFAULTS.address,
-    },
-    whatsappDisplay: {
-        type: ControlType.String,
-        title: "WA visible",
-        defaultValue: DEFAULTS.whatsappDisplay,
-    },
-    whatsappNumber: {
-        type: ControlType.String,
-        title: "WA número",
-        defaultValue: DEFAULTS.whatsappNumber,
-    },
-    navCta: {
-        type: ControlType.String,
-        title: "Nav CTA",
-        defaultValue: DEFAULTS.navCta,
-    },
-    primaryCta: {
-        type: ControlType.String,
-        title: "CTA 1",
-        defaultValue: DEFAULTS.primaryCta,
-    },
-    secondaryCta: {
-        type: ControlType.String,
-        title: "CTA 2",
-        defaultValue: DEFAULTS.secondaryCta,
-    },
-    heroEyebrow: {
-        type: ControlType.String,
-        title: "Hero Tag",
-        defaultValue: DEFAULTS.heroEyebrow,
-    },
-    heroTitle: {
-        type: ControlType.String,
-        title: "Hero Tit.",
-        defaultValue: DEFAULTS.heroTitle,
-        displayTextArea: true,
-    },
-    heroText: {
-        type: ControlType.String,
-        title: "Hero Texto",
-        defaultValue: DEFAULTS.heroText,
-        displayTextArea: true,
-    },
-    statOneValue: {
-        type: ControlType.String,
-        title: "Dato 1",
-        defaultValue: DEFAULTS.statOneValue,
-    },
-    statOneText: {
-        type: ControlType.String,
-        title: "Dato 1 Txt",
-        defaultValue: DEFAULTS.statOneText,
-    },
-    statTwoValue: {
-        type: ControlType.String,
-        title: "Dato 2",
-        defaultValue: DEFAULTS.statTwoValue,
-    },
-    statTwoText: {
-        type: ControlType.String,
-        title: "Dato 2 Txt",
-        defaultValue: DEFAULTS.statTwoText,
-    },
-    statThreeValue: {
-        type: ControlType.String,
-        title: "Dato 3",
-        defaultValue: DEFAULTS.statThreeValue,
-    },
-    statThreeText: {
-        type: ControlType.String,
-        title: "Dato 3 Txt",
-        defaultValue: DEFAULTS.statThreeText,
-    },
-    introLabel: {
-        type: ControlType.String,
-        title: "Intro Tag",
-        defaultValue: DEFAULTS.introLabel,
-    },
-    introTitle: {
-        type: ControlType.String,
-        title: "Intro Tit.",
-        defaultValue: DEFAULTS.introTitle,
-        displayTextArea: true,
-    },
-    introText: {
-        type: ControlType.String,
-        title: "Intro Txt",
-        defaultValue: DEFAULTS.introText,
-        displayTextArea: true,
-    },
-    valuesLabel: {
-        type: ControlType.String,
-        title: "Valores Tag",
-        defaultValue: DEFAULTS.valuesLabel,
-    },
-    valuesTitle: {
-        type: ControlType.String,
-        title: "Valores Tit.",
-        defaultValue: DEFAULTS.valuesTitle,
-        displayTextArea: true,
-    },
-    valuesText: {
-        type: ControlType.String,
-        title: "Valores",
-        defaultValue: DEFAULTS.valuesText,
-        displayTextArea: true,
-    },
-    pillarOneTitle: {
-        type: ControlType.String,
-        title: "Pilar 1",
-        defaultValue: DEFAULTS.pillarOneTitle,
-    },
-    pillarOneText: {
-        type: ControlType.String,
-        title: "Pilar 1 Txt",
-        defaultValue: DEFAULTS.pillarOneText,
-        displayTextArea: true,
-    },
-    pillarTwoTitle: {
-        type: ControlType.String,
-        title: "Pilar 2",
-        defaultValue: DEFAULTS.pillarTwoTitle,
-    },
-    pillarTwoText: {
-        type: ControlType.String,
-        title: "Pilar 2 Txt",
-        defaultValue: DEFAULTS.pillarTwoText,
-        displayTextArea: true,
-    },
-    pillarThreeTitle: {
-        type: ControlType.String,
-        title: "Pilar 3",
-        defaultValue: DEFAULTS.pillarThreeTitle,
-    },
-    pillarThreeText: {
-        type: ControlType.String,
-        title: "Pilar 3 Txt",
-        defaultValue: DEFAULTS.pillarThreeText,
-        displayTextArea: true,
-    },
-    instructorLabel: {
-        type: ControlType.String,
-        title: "Inst. Tag",
-        defaultValue: DEFAULTS.instructorLabel,
-    },
-    instructorTitle: {
-        type: ControlType.String,
-        title: "Inst. Tit.",
-        defaultValue: DEFAULTS.instructorTitle,
-        displayTextArea: true,
-    },
-    instructorText: {
-        type: ControlType.String,
-        title: "Inst. Txt",
-        defaultValue: DEFAULTS.instructorText,
-        displayTextArea: true,
-    },
-    scheduleLabel: {
-        type: ControlType.String,
-        title: "Horario Tag",
-        defaultValue: DEFAULTS.scheduleLabel,
-    },
-    scheduleTitle: {
-        type: ControlType.String,
-        title: "Horario Tit.",
-        defaultValue: DEFAULTS.scheduleTitle,
-        displayTextArea: true,
-    },
-    scheduleText: {
-        type: ControlType.String,
-        title: "Horario Txt",
-        defaultValue: DEFAULTS.scheduleText,
-        displayTextArea: true,
-    },
-    mondayText: {
-        type: ControlType.String,
-        title: "Lunes",
-        defaultValue: DEFAULTS.mondayText,
-    },
-    wednesdayText: {
-        type: ControlType.String,
-        title: "Miércoles",
-        defaultValue: DEFAULTS.wednesdayText,
-    },
-    fridayText: {
-        type: ControlType.String,
-        title: "Viernes",
-        defaultValue: DEFAULTS.fridayText,
-    },
-    galleryLabel: {
-        type: ControlType.String,
-        title: "Galería Tag",
-        defaultValue: DEFAULTS.galleryLabel,
-    },
-    galleryTitle: {
-        type: ControlType.String,
-        title: "Galería Tit.",
-        defaultValue: DEFAULTS.galleryTitle,
-        displayTextArea: true,
-    },
-    galleryText: {
-        type: ControlType.String,
-        title: "Galería Txt",
-        defaultValue: DEFAULTS.galleryText,
-        displayTextArea: true,
-    },
-    galleryOneTitle: {
-        type: ControlType.String,
-        title: "Foto 1",
-        defaultValue: DEFAULTS.galleryOneTitle,
-    },
-    galleryOneTag: {
-        type: ControlType.String,
-        title: "Foto 1 Tag",
-        defaultValue: DEFAULTS.galleryOneTag,
-    },
-    galleryTwoTitle: {
-        type: ControlType.String,
-        title: "Foto 2",
-        defaultValue: DEFAULTS.galleryTwoTitle,
-    },
-    galleryTwoTag: {
-        type: ControlType.String,
-        title: "Foto 2 Tag",
-        defaultValue: DEFAULTS.galleryTwoTag,
-    },
-    galleryThreeTitle: {
-        type: ControlType.String,
-        title: "Foto 3",
-        defaultValue: DEFAULTS.galleryThreeTitle,
-    },
-    galleryThreeTag: {
-        type: ControlType.String,
-        title: "Foto 3 Tag",
-        defaultValue: DEFAULTS.galleryThreeTag,
-    },
-    galleryFourTitle: {
-        type: ControlType.String,
-        title: "Foto 4",
-        defaultValue: DEFAULTS.galleryFourTitle,
-    },
-    galleryFourTag: {
-        type: ControlType.String,
-        title: "Foto 4 Tag",
-        defaultValue: DEFAULTS.galleryFourTag,
-    },
-    contactLabel: {
-        type: ControlType.String,
-        title: "Contacto Tag",
-        defaultValue: DEFAULTS.contactLabel,
-    },
-    contactTitle: {
-        type: ControlType.String,
-        title: "Contacto Tit.",
-        defaultValue: DEFAULTS.contactTitle,
-        displayTextArea: true,
-    },
-    contactText: {
-        type: ControlType.String,
-        title: "Contacto Txt",
-        defaultValue: DEFAULTS.contactText,
-        displayTextArea: true,
-    },
-    footerCredit: {
-        type: ControlType.String,
-        title: "Footer",
-        defaultValue: DEFAULTS.footerCredit,
-    },
-    mapUrl: {
-        type: ControlType.String,
-        title: "Mapa URL",
-        defaultValue: DEFAULTS.mapUrl,
-    },
-    heroImage: {
-        type: ControlType.Image,
-        title: "Hero Img",
-        defaultValue: DEFAULTS.heroImage,
-    },
-    instructorImage: {
-        type: ControlType.Image,
-        title: "Inst. Img",
-        defaultValue: DEFAULTS.instructorImage,
-    },
-    dojoImage: {
-        type: ControlType.Image,
-        title: "Dojo Img",
-        defaultValue: DEFAULTS.dojoImage,
-    },
-    galleryOneImage: {
-        type: ControlType.Image,
-        title: "Foto 1 Img",
-        defaultValue: DEFAULTS.galleryOneImage,
-    },
-    galleryTwoImage: {
-        type: ControlType.Image,
-        title: "Foto 2 Img",
-        defaultValue: DEFAULTS.galleryTwoImage,
-    },
-    galleryThreeImage: {
-        type: ControlType.Image,
-        title: "Foto 3 Img",
-        defaultValue: DEFAULTS.galleryThreeImage,
-    },
-    galleryFourImage: {
-        type: ControlType.Image,
-        title: "Foto 4 Img",
-        defaultValue: DEFAULTS.galleryFourImage,
-    },
-    backgroundColor: {
-        type: ControlType.Color,
-        title: "Fondo",
-        defaultValue: DEFAULTS.backgroundColor,
-    },
-    inkColor: {
-        type: ControlType.Color,
-        title: "Texto",
-        defaultValue: DEFAULTS.inkColor,
-    },
-    mutedColor: {
-        type: ControlType.Color,
-        title: "Texto 2",
-        defaultValue: DEFAULTS.mutedColor,
-    },
-    emberColor: {
-        type: ControlType.Color,
-        title: "Rojo",
-        defaultValue: DEFAULTS.emberColor,
-    },
-    flameColor: {
-        type: ControlType.Color,
-        title: "Fuego",
-        defaultValue: DEFAULTS.flameColor,
-    },
-    goldColor: {
-        type: ControlType.Color,
-        title: "Dorado",
-        defaultValue: DEFAULTS.goldColor,
-    },
-    creamColor: {
-        type: ControlType.Color,
-        title: "Crema",
-        defaultValue: DEFAULTS.creamColor,
-    },
-})
+~
